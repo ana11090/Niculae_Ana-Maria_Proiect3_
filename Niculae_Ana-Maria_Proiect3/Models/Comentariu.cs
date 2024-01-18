@@ -15,9 +15,6 @@
         public Sarcina Sarcina { get; set; }
 
         // Constructorul implicit
-        public Comentariu()
-        {
-            // Inițializare a proprietăților sau alte acțiuni necesare.
-        }
+        
     }
 }

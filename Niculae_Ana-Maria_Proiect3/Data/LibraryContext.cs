@@ -19,13 +19,49 @@ namespace Niculae_Ana_Maria_Proiect3.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+          
+
+            // Proiect to Manager relationship
+            modelBuilder.Entity<Proiect>()
+                .HasOne(p => p.ManagerProiect)
+                .WithMany(m => m.Proiecte)
+                .HasForeignKey(p => p.ManagerId);
+
+            // Sarcina to Proiect relationship
+            modelBuilder.Entity<Sarcina>()
+                .HasOne(s => s.ProiectAsociat)
+                .WithMany(p => p.Sarcini)
+                .HasForeignKey(s => s.ProiectId);
+
+            // Sarcina to Comentariu relationship
+            modelBuilder.Entity<Comentariu>()
+                .HasOne(c => c.Sarcina)
+                .WithMany(s => s.Comentarii)
+                .HasForeignKey(c => c.SarcinaId)
+                .OnDelete(DeleteBehavior.Restrict); // Optional: to prevent cascade delete
+
+
+            // Configuring many-to-many relationship between Sarcina and MembruEchipa
+            modelBuilder.Entity<SarcinaMembruEchipa>()
+                .HasKey(sm => new { sm.SarcinaId, sm.MembruEchipaId });
+
+            modelBuilder.Entity<SarcinaMembruEchipa>()
+                .HasOne(sm => sm.Sarcina)
+                .WithMany(s => s.SarcinaMembriEchipa)
+                .HasForeignKey(sm => sm.SarcinaId);
+
+            modelBuilder.Entity<SarcinaMembruEchipa>()
+                .HasOne(sm => sm.MembruEchipa)
+                .WithMany(m => m.SarcinaMembriEchipa)
+                .HasForeignKey(sm => sm.MembruEchipaId);
+
+            // Table mappings
             modelBuilder.Entity<Proiect>().ToTable("Proiect");
             modelBuilder.Entity<Sarcina>().ToTable("Sarcina");
             modelBuilder.Entity<Comentariu>().ToTable("Comentariu");
             modelBuilder.Entity<MembruEchipa>().ToTable("MembruEchipa");
             modelBuilder.Entity<Manager>().ToTable("Manager");
-            modelBuilder.Entity<SarcinaMembruEchipa>().ToTable("SarcinaMembruEchipa")
-                .HasKey(sme => new { sme.SarcinaId, sme.MembruEchipaId }); // Cheia compusă pentru relația many-to-many
+            modelBuilder.Entity<SarcinaMembruEchipa>().ToTable("SarcinaMembruEchipa");
 
         }
 

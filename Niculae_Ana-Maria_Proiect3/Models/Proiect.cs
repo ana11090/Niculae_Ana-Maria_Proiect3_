@@ -5,7 +5,7 @@ namespace Niculae_Ana_Maria_Proiect3.Models
     public class Proiect
     {
        
-        public int ProiectID { get; set; }
+        public int ProiectId { get; set; }
 
         [Required(ErrorMessage = "Introduceti numele proiectului")]
         public string Nume { get; set; }
@@ -20,9 +20,9 @@ namespace Niculae_Ana_Maria_Proiect3.Models
         public StatusProiect Status { get; set; }
 
         [Required(ErrorMessage = "Alegeti managerul proiectului")]
-        public int ManagerID { get; set; }
+        public int ManagerId { get; set; }
 
-        public Manager ManagerProiect { get; set; }
+        public Manager? ManagerProiect { get; set; }
 
         public ICollection<Sarcina> Sarcini { get; set; }
 

@@ -37,8 +37,8 @@ namespace Niculae_Ana_Maria_Proiect3.Data
                 // Adding some Projects
                 var projects = new Proiect[]
                 {
-                    new Proiect { Nume = "Proiect 1", ManagerID = managers[0].ManagerId, Status = StatusProiect.InAsteptare },
-                    new Proiect { Nume = "Proiect 2", ManagerID = managers[1].ManagerId, Status = StatusProiect.Completat }
+                    new Proiect { Nume = "Proiect 1", ManagerId = managers[0].ManagerId, Status = StatusProiect.InAsteptare },
+                    new Proiect { Nume = "Proiect 2", ManagerId = managers[1].ManagerId, Status = StatusProiect.Completat }
                     // More projects
                 };
 
@@ -51,8 +51,8 @@ namespace Niculae_Ana_Maria_Proiect3.Data
                 // Adding some Tasks (Sarcini)
                 var tasks = new Sarcina[]
                 {
-                    new Sarcina { Descriere = "Sarcina 1 pentru Proiect 1", ProiectId = projects[0].ProiectID, Status = StatusSarcina.Neinceputa },
-                    new Sarcina { Descriere = "Sarcina 2 pentru Proiect 2", ProiectId = projects[1].ProiectID, Status = StatusSarcina.InDesfasurare }
+                    new Sarcina { Descriere = "Sarcina 1 pentru Proiect 1", ProiectId = projects[0].ProiectId, Status = StatusSarcina.Neinceputa },
+                    new Sarcina { Descriere = "Sarcina 2 pentru Proiect 2", ProiectId = projects[1].ProiectId, Status = StatusSarcina.InDesfasurare }
                     // More tasks
                 };
 
