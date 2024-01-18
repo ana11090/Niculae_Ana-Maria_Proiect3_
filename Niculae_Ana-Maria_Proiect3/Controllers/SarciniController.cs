@@ -59,20 +59,24 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
         //}
         public IActionResult Create()
         {
-            var viewModel = new SarcinaViewModel
-            {
-                // Initialize other properties of viewModel as needed
-                MembriiEchipa = _context.MembriEchipa.Select(me => new MembruEchipaCheckboxViewModel
-                {
-                    MembruEchipaId = me.MembruEchipaId,
-                    Nume = me.Nume,
-                    IsSelected = false // Assuming initially none of the team members are selected
-                }).ToList()
-            };
             ViewData["ProiectId"] = new SelectList(_context.Proiecte, "ProiectId", "Nume");
             ViewData["MembriEchipa"] = new SelectList(_context.MembriEchipa, "MembruEchipaId", "Nume");
+
+            var viewModel = new SarcinaViewModel
+            {
+                MembriiEchipa = _context.MembriEchipa
+                    .Select(member => new MembruEchipaCheckboxViewModel
+                    {
+                        MembruEchipaId = member.MembruEchipaId,
+                        Nume = member.Nume,
+                        IsSelected = false // Initialize all checkboxes as unchecked
+                    })
+                    .ToList()
+            };
+
             return View(viewModel);
         }
+
 
         // POST: Sarcini/Create
         //[HttpPost]
@@ -109,13 +113,10 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
         //    return View(sarcina);
         //}
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(SarcinaViewModel viewModel)
         {
-            //if (ModelState.IsValid)
-            //{
             var sarcina = new Sarcina
             {
                 NumeSarcina = viewModel.Sarcina.NumeSarcina,
@@ -123,51 +124,33 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
                 DataIncepere = viewModel.Sarcina.DataIncepere,
                 DataFinalizare = viewModel.Sarcina.DataFinalizare,
                 Status = viewModel.Sarcina.Status,
-                ProiectId = viewModel.Sarcina.ProiectId 
+                ProiectId = viewModel.Sarcina.ProiectId
             };
 
-
             _context.Sarcini.Add(sarcina);
-                await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();  // Save Sarcina to get its generated ID
 
-                foreach (var teamMember in viewModel.MembriiEchipa)
+            if (viewModel.MembriiEchipa != null)
+            {
+                foreach (var member in viewModel.MembriiEchipa)
                 {
-                    if (teamMember.IsSelected)
+                    if (member.IsSelected)
                     {
-                        var sarcinaMembruEchipa = new SarcinaMembruEchipa
+                        _context.SarcinaMembriEchipa.Add(new SarcinaMembruEchipa
                         {
-                            SarcinaId = sarcina.SarcinaId,
-                            MembruEchipaId = teamMember.MembruEchipaId
-                        };
-                        _context.SarcinaMembriEchipa.Add(sarcinaMembruEchipa);
+                            SarcinaId = sarcina.SarcinaId, // Now sarcina.SarcinaId has a value
+                            MembruEchipaId = member.MembruEchipaId
+                        });
                     }
                 }
-                await _context.SaveChangesAsync();
-               
-                return RedirectToAction(nameof(Index));
-            ////}
-            ////foreach (var key in ModelState.Keys)
-            ////{
-            ////    var modelStateEntry = ModelState[key];
-            ////    foreach (var error in modelStateEntry.Errors)
-            ////    {
-            ////        // Log or print the error messages to diagnose the issue
-            ////        Console.WriteLine($"Key: {key}, Error: {error.ErrorMessage}");
-            ////    }
-            ////}
-            //// Updated to include the function of each team member
-            //// Populate ViewData for MembriEchipa
-            //ViewData["MembriEchipa"] = new SelectList(_context.MembriEchipa.Select(m => new
-            //{
-            //    MembruEchipaId = m.MembruEchipaId,
-            //    Description = $"{m.Nume} - {m.Functie}" // Assuming Functie is a property of MembruEchipa
-            //}), "MembruEchipaId", "Description");
+                await _context.SaveChangesAsync();  // Save SarcinaMembruEchipa entities
+            }
 
-            //ViewData["Status"] = new SelectList(Enum.GetValues(typeof(StatusSarcina)));
-
-
-            //return View(viewModel);
+            return RedirectToAction(nameof(Index));
         }
+
+
+
 
 
 
