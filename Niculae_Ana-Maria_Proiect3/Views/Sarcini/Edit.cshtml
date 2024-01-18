@@ -1,54 +1,69 @@
-﻿@model Niculae_Ana_Maria_Proiect3.Models.Sarcina
+﻿@model Niculae_Ana_Maria_Proiect3.Models.View.SarcinaViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 
-<h1>Create</h1>
+<h1>Edit</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Edit">
+            <input type="hidden" asp-for="Sarcina.SarcinaId" />
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
-                <label asp-for="NumeSarcina" class="control-label"></label>
-                <input asp-for="NumeSarcina" class="form-control" />
-                <span asp-validation-for="NumeSarcina" class="text-danger"></span>
+                <label asp-for="Sarcina.NumeSarcina" class="control-label">Titlu sarcina</label>
+                <input asp-for="Sarcina.NumeSarcina" class="form-control" />
+                <span asp-validation-for="Sarcina.NumeSarcina" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="Descriere" class="control-label"></label>
-                <input asp-for="Descriere" class="form-control" />
-                <span asp-validation-for="Descriere" class="text-danger"></span>
+                <label asp-for="Sarcina.Descriere" class="control-label">Descriere</label>
+                <input asp-for="Sarcina.Descriere" class="form-control" />
+                <span asp-validation-for="Sarcina.Descriere" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="DataIncepere" class="control-label"></label>
-                <input asp-for="DataIncepere" type="date" class="form-control" />
-                <span asp-validation-for="DataIncepere" class="text-danger"></span>
+                <label asp-for="Sarcina.DataIncepere" class="control-label">Data incepere</label>
+                <input asp-for="Sarcina.DataIncepere" type="date" class="form-control" />
+                <span asp-validation-for="Sarcina.DataIncepere" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="DataFinalizare" class="control-label"></label>
-                <input asp-for="DataFinalizare" type="date" class="form-control" />
-                <span asp-validation-for="DataFinalizare" class="text-danger"></span>
+                <label asp-for="Sarcina.DataFinalizare" class="control-label">Data finalizare</label>
+                <input asp-for="Sarcina.DataFinalizare" type="date" class="form-control" />
+                <span asp-validation-for="Sarcina.DataFinalizare" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" asp-items="Html.GetEnumSelectList<Niculae_Ana_Maria_Proiect3.Models.StatusSarcina>()" class="form-control"></select>
-                <span asp-validation-for="Status" class="text-danger"></span>
+                <label asp-for="Sarcina.Status" class="control-label">Status</label>
+                <select asp-for="Sarcina.Status" asp-items="Html.GetEnumSelectList<Niculae_Ana_Maria_Proiect3.Models.StatusSarcina>()" class="form-control"></select>
+                <span asp-validation-for="Sarcina.Status" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="ProiectId" class="control-label"></label>
-                <select asp-for="ProiectId" asp-items="ViewBag.ProiectId" class="form-control"></select>
-                <span asp-validation-for="ProiectId" class="text-danger"></span>
+                <label asp-for="Sarcina.ProiectId" class="control-label">Proiect</label>
+                <select asp-for="Sarcina.ProiectId" asp-items="ViewBag.ProiectId" class="form-control"></select>
+                <span asp-validation-for="Sarcina.ProiectId" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label asp-for="MembriiEchipa" class="control-label">Membrii de echipa responsabili</label>
+                @for (int i = 0; i < Model.MembriiEchipa.Count; i++)
+                {
+                    <div class="form-group">
+                        <input asp-for="@Model.MembriiEchipa[i].IsSelected" type="checkbox" />
+                        <input asp-for="@Model.MembriiEchipa[i].MembruEchipaId" type="hidden" />
+                        @Model.MembriiEchipa[i].Nume
+                    </div>
+                }
+
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Edit" class="btn btn-primary" />
             </div>
         </form>
     </div>
