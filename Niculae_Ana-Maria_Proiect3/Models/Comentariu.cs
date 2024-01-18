@@ -10,8 +10,6 @@
         public int AutorId { get; set; }
         //public Utilizator Autor { get; set; } // Proprietatea de navigație către utilizator
 
-        public int? ProiectId { get; set; }
-        public Proiect Proiect { get; set; }
 
         public int? SarcinaId { get; set; }
         public Sarcina Sarcina { get; set; }
