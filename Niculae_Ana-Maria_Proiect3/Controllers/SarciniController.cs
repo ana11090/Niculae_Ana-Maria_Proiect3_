@@ -21,16 +21,18 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
         }
 
         // GET: Sarcini
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var libraryContext = _context.Sarcini.Include(s => s.ProiectAsociat)
-                                                  .ThenInclude(p => p.ManagerProiect) // Include the Manager for the Project
-                                                  .Include(s => s.SarcinaMembriEchipa); // Include the Team Members for the Sarcina
-
-            var sarcini = await libraryContext.ToListAsync();
+            var sarcini = _context.Sarcini
+                .Include(s => s.ProiectAsociat)
+                    .ThenInclude(p => p.ManagerProiect)
+                .Include(s => s.SarcinaMembriEchipa)
+                    .ThenInclude(sme => sme.MembruEchipa)
+                .ToList();
 
             return View(sarcini);
         }
+
 
         // GET: Sarcini/Details/5
         public async Task<IActionResult> Details(int? id)

@@ -17,7 +17,7 @@
     <thead>
         <tr>
             <th>
-                Titlu 
+                Titlu
             </th>
             <th>
                 Descriere
@@ -35,7 +35,7 @@
                 Manager
             </th>
             <th>
-                Membrii de echipa responsabili
+                Numar de angajatii responsabili
             </th>
             <th></th>
         </tr>
@@ -63,18 +63,29 @@
                     @Html.DisplayFor(modelItem => item.ProiectAsociat.ManagerProiect.Nume)
                 </td>
                 <td>
-                    <button class="btn btn-link" onclick="showTeamMembers('@item.SarcinaId')">
-                        @item.SarcinaMembriEchipa.Count
-                    </button>
-                    <div id="teamMembersDropdown@item.SarcinaId" style="display: none;">
-                        @foreach (var member in item.SarcinaMembriEchipa)
-                        {
-                            <a class="dropdown-item" href="#">
-                                @member.MembruEchipa?.Nume ?? "Unknown"
-                            </a>
-                        }
+                    <div class="dropdown">
+                        <button class="btn btn-link dropdown-toggle" type="button"
+                                id="dropdownMenuButton@item.SarcinaId"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                            @item.SarcinaMembriEchipa.Count
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton@item.SarcinaId">
+                            @if (item.SarcinaMembriEchipa != null && item.SarcinaMembriEchipa.Any())
+                            {
+                                foreach (var member in item.SarcinaMembriEchipa)
+                                {
+                                    <li><a class="dropdown-item" href="#">@member.MembruEchipa?.Nume</a></li>
+                                }
+                            }
+                            else
+                            {
+                                <li><span class="dropdown-item">Sarcina nu a fost repartizata</span></li>
+                            }
+                        </ul>
                     </div>
                 </td>
+
 
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.SarcinaId">Edit</a> |
@@ -90,7 +101,9 @@
     <script>
         function showTeamMembers(sarcinaId) {
             var dropdown = document.getElementById('teamMembersDropdown' + sarcinaId);
-            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+            if (dropdown) {
+                dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+            }
         }
     </script>
-} 
+}
