@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Niculae_Ana_Maria_Proiect3.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class _1Migration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,11 +31,18 @@ namespace Niculae_Ana_Maria_Proiect3.Migrations
                     MembruEchipaId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nume = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Functie = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Functie = table.Column<int>(type: "int", nullable: false),
+                    ManagerId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MembruEchipa", x => x.MembruEchipaId);
+                    table.ForeignKey(
+                        name: "FK_MembruEchipa_Manager_ManagerId",
+                        column: x => x.ManagerId,
+                        principalTable: "Manager",
+                        principalColumn: "ManagerId",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -68,7 +75,8 @@ namespace Niculae_Ana_Maria_Proiect3.Migrations
                 {
                     SarcinaId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Descriere = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NumeSarcina = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Descriere = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DataIncepere = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DataFinalizare = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
@@ -135,6 +143,11 @@ namespace Niculae_Ana_Maria_Proiect3.Migrations
                 name: "IX_Comentariu_SarcinaId",
                 table: "Comentariu",
                 column: "SarcinaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MembruEchipa_ManagerId",
+                table: "MembruEchipa",
+                column: "ManagerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Proiect_ManagerId",

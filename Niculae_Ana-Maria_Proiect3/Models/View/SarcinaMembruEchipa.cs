@@ -4,7 +4,6 @@
     {
         public int SarcinaId { get; set; }
         public Sarcina Sarcina { get; set; }
-
         public int MembruEchipaId { get; set; }
         public MembruEchipa MembruEchipa { get; set; }
     }

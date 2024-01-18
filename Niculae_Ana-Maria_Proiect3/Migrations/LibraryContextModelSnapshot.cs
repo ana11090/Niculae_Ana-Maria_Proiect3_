@@ -80,7 +80,6 @@ namespace Niculae_Ana_Maria_Proiect3.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("ManagerId")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Nume")
@@ -145,15 +144,15 @@ namespace Niculae_Ana_Maria_Proiect3.Migrations
                     b.Property<string>("Descriere")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("NumeSarcina")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("ProiectId")
                         .HasColumnType("int");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
-
-                    b.Property<string>("Titlu")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("SarcinaId");
 
@@ -193,8 +192,7 @@ namespace Niculae_Ana_Maria_Proiect3.Migrations
                     b.HasOne("Niculae_Ana_Maria_Proiect3.Models.Manager", "Manager")
                         .WithMany("MembriEchipa")
                         .HasForeignKey("ManagerId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Manager");
                 });

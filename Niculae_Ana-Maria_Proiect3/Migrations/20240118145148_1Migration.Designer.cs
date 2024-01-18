@@ -12,15 +12,15 @@ using Niculae_Ana_Maria_Proiect3.Data;
 namespace Niculae_Ana_Maria_Proiect3.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    [Migration("20240118025517_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240118145148_1Migration")]
+    partial class _1Migration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.12")
+                .HasAnnotation("ProductVersion", "7.0.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -79,15 +79,19 @@ namespace Niculae_Ana_Maria_Proiect3.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MembruEchipaId"));
 
-                    b.Property<string>("Functie")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Functie")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ManagerId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Nume")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("MembruEchipaId");
+
+                    b.HasIndex("ManagerId");
 
                     b.ToTable("MembruEchipa", (string)null);
                 });
@@ -141,6 +145,9 @@ namespace Niculae_Ana_Maria_Proiect3.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Descriere")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NumeSarcina")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -181,6 +188,16 @@ namespace Niculae_Ana_Maria_Proiect3.Migrations
                         .IsRequired();
 
                     b.Navigation("Sarcina");
+                });
+
+            modelBuilder.Entity("Niculae_Ana_Maria_Proiect3.Models.MembruEchipa", b =>
+                {
+                    b.HasOne("Niculae_Ana_Maria_Proiect3.Models.Manager", "Manager")
+                        .WithMany("MembriEchipa")
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Manager");
                 });
 
             modelBuilder.Entity("Niculae_Ana_Maria_Proiect3.Models.Proiect", b =>
@@ -226,6 +243,8 @@ namespace Niculae_Ana_Maria_Proiect3.Migrations
 
             modelBuilder.Entity("Niculae_Ana_Maria_Proiect3.Models.Manager", b =>
                 {
+                    b.Navigation("MembriEchipa");
+
                     b.Navigation("Proiecte");
                 });
 
