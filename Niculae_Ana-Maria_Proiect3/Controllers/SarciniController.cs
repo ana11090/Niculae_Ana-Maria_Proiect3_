@@ -7,26 +7,32 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Niculae_Ana_Maria_Proiect3.Data;
 using Niculae_Ana_Maria_Proiect3.Models;
+using Niculae_Ana_Maria_Proiect3.Models.View;
 
 namespace Niculae_Ana_Maria_Proiect3.Controllers
 {
-    public class SarcinasController : Controller
+    public class SarciniController : Controller
     {
         private readonly LibraryContext _context;
 
-        public SarcinasController(LibraryContext context)
+        public SarciniController(LibraryContext context)
         {
             _context = context;
         }
 
-        // GET: Sarcinas
+        // GET: Sarcini
         public async Task<IActionResult> Index()
         {
-            var libraryContext = _context.Sarcini.Include(s => s.ProiectAsociat);
-            return View(await libraryContext.ToListAsync());
+            var libraryContext = _context.Sarcini.Include(s => s.ProiectAsociat)
+                                                  .ThenInclude(p => p.ManagerProiect) // Include the Manager for the Project
+                                                  .Include(s => s.SarcinaMembriEchipa); // Include the Team Members for the Sarcina
+
+            var sarcini = await libraryContext.ToListAsync();
+
+            return View(sarcini);
         }
 
-        // GET: Sarcinas/Details/5
+        // GET: Sarcini/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Sarcini == null)
@@ -45,19 +51,19 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
             return View(sarcina);
         }
 
-        // GET: Sarcinas/Create
+        // GET: Sarcini/Create
         public IActionResult Create()
         {
             ViewData["ProiectId"] = new SelectList(_context.Proiecte, "ProiectId", "Nume");
             return View();
         }
 
-        // POST: Sarcinas/Create
+        // POST: Sarcini/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SarcinaId,Descriere,DataIncepere,DataFinalizare,Status,ProiectId")] Sarcina sarcina)
+        public async Task<IActionResult> Create([Bind("SarcinaId,Titlu,Descriere,DataIncepere,DataFinalizare,Status,ProiectId")] Sarcina sarcina)
         {
             if (ModelState.IsValid)
             {
@@ -69,29 +75,35 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
             return View(sarcina);
         }
 
-        // GET: Sarcinas/Edit/5
+        // GET: Sarcini/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Sarcini == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var sarcina = await _context.Sarcini.FindAsync(id);
+            var sarcina = await _context.Sarcini
+                .Include(s => s.SarcinaMembriEchipa)
+                .FirstOrDefaultAsync(s => s.SarcinaId == id);
+
             if (sarcina == null)
             {
                 return NotFound();
             }
-            ViewData["ProiectId"] = new SelectList(_context.Proiecte, "ProiectId", "Nume", sarcina.ProiectId);
+
+            // Populate the ViewBag with team members' names and IDs
+            ViewBag.TeamMembers = new MultiSelectList(_context.MembriEchipa, "MembruEchipaId", "NumeMembruEchipa", sarcina.SarcinaMembriEchipa.Select(sm => sm.MembruEchipaId));
+
+            // Store the selected team members' IDs in a temporary field
+            ViewBag.SelectedTeamMembers = sarcina.SarcinaMembriEchipa.Select(sm => sm.MembruEchipaId).ToArray();
+
             return View(sarcina);
         }
 
-        // POST: Sarcinas/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("SarcinaId,Descriere,DataIncepere,DataFinalizare,Status,ProiectId")] Sarcina sarcina)
+        public async Task<IActionResult> Edit(int id, Sarcina sarcina, int[] selectedMembers)
         {
             if (id != sarcina.SarcinaId)
             {
@@ -102,6 +114,11 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
             {
                 try
                 {
+                    // Update the selected team members based on the IDs in selectedMembers
+                    sarcina.SarcinaMembriEchipa = selectedMembers
+                        .Select(membruId => new SarcinaMembruEchipa { SarcinaId = sarcina.SarcinaId, MembruEchipaId = membruId })
+                        .ToList();
+
                     _context.Update(sarcina);
                     await _context.SaveChangesAsync();
                 }
@@ -118,11 +135,31 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProiectId"] = new SelectList(_context.Proiecte, "ProiectId", "Nume", sarcina.ProiectId);
+
+            foreach (var key in ModelState.Keys)
+            {
+                var modelStateEntry = ModelState[key];
+                foreach (var error in modelStateEntry.Errors)
+                {
+                    // Log or print the error messages to diagnose the issue
+                    Console.WriteLine($"Key: {key}, Error: {error.ErrorMessage}");
+                }
+            }
+
+            // Repopulate the ViewBag with team members' names and IDs
+            ViewBag.TeamMembers = new MultiSelectList(_context.MembriEchipa, "MembruEchipaId", "NumeMembruEchipa", sarcina.SarcinaMembriEchipa.Select(sm => sm.MembruEchipaId));
+
+            // Store the selected team members' IDs in a temporary field
+            ViewBag.SelectedTeamMembers = selectedMembers;
+
             return View(sarcina);
         }
 
-        // GET: Sarcinas/Delete/5
+
+
+
+
+        // GET: Sarcini/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Sarcini == null)
@@ -141,7 +178,7 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
             return View(sarcina);
         }
 
-        // POST: Sarcinas/Delete/5
+        // POST: Sarcini/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

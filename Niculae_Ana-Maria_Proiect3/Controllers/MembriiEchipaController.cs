@@ -10,23 +10,25 @@ using Niculae_Ana_Maria_Proiect3.Models;
 
 namespace Niculae_Ana_Maria_Proiect3.Controllers
 {
-    public class MembruEchipasController : Controller
+    public class MembriiEchipaController : Controller
     {
         private readonly LibraryContext _context;
 
-        public MembruEchipasController(LibraryContext context)
+        public MembriiEchipaController(LibraryContext context)
         {
             _context = context;
         }
 
-        // GET: MembruEchipas
+        // GET: MembriiEchipa
         public async Task<IActionResult> Index()
         {
-            var libraryContext = _context.MembriEchipa.Include(m => m.Manager);
-            return View(await libraryContext.ToListAsync());
+            var membriEchipa = await _context.MembriEchipa.Include(m => m.Manager).ToListAsync();
+            return View(membriEchipa); 
         }
 
-        // GET: MembruEchipas/Details/5
+
+
+        // GET: MembriiEchipa/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.MembriEchipa == null)
@@ -45,16 +47,14 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
             return View(membruEchipa);
         }
 
-        // GET: MembruEchipas/Create
+        // GET: MembriiEchipa/Create
         public IActionResult Create()
         {
-            ViewData["ManagerId"] = new SelectList(_context.Manageri, "ManagerId", "ManagerId");
+            ViewData["ManagerId"] = new SelectList(_context.Manageri, "ManagerId", "Nume");
             return View();
         }
 
-        // POST: MembruEchipas/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: MembriiEchipa/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MembruEchipaId,Nume,Functie,ManagerId")] MembruEchipa membruEchipa)
@@ -65,14 +65,15 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ManagerId"] = new SelectList(_context.Manageri, "ManagerId", "ManagerId", membruEchipa.ManagerId);
+            ViewData["ManagerId"] = new SelectList(_context.Manageri, "ManagerId", "Nume", membruEchipa.ManagerId); 
             return View(membruEchipa);
         }
 
-        // GET: MembruEchipas/Edit/5
+
+        // GET: MembriiEchipa/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.MembriEchipa == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -82,13 +83,12 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
             {
                 return NotFound();
             }
-            ViewData["ManagerId"] = new SelectList(_context.Manageri, "ManagerId", "ManagerId", membruEchipa.ManagerId);
+
+            ViewData["ManagerId"] = new SelectList(_context.Manageri, "ManagerId", "Nume", membruEchipa.ManagerId);
             return View(membruEchipa);
         }
 
-        // POST: MembruEchipas/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: MembriiEchipa/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("MembruEchipaId,Nume,Functie,ManagerId")] MembruEchipa membruEchipa)
@@ -118,14 +118,14 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ManagerId"] = new SelectList(_context.Manageri, "ManagerId", "ManagerId", membruEchipa.ManagerId);
+            ViewData["ManagerId"] = new SelectList(_context.Manageri, "ManagerId", "Nume", membruEchipa.ManagerId);
             return View(membruEchipa);
         }
 
-        // GET: MembruEchipas/Delete/5
+        // GET: MembriiEchipa/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.MembriEchipa == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -141,22 +141,17 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
             return View(membruEchipa);
         }
 
-        // POST: MembruEchipas/Delete/5
+        // POST: MembriiEchipa/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.MembriEchipa == null)
-            {
-                return Problem("Entity set 'LibraryContext.MembriEchipa'  is null.");
-            }
             var membruEchipa = await _context.MembriEchipa.FindAsync(id);
             if (membruEchipa != null)
             {
                 _context.MembriEchipa.Remove(membruEchipa);
+                await _context.SaveChangesAsync();
             }
-            
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

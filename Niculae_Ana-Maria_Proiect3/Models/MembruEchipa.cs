@@ -17,7 +17,7 @@ namespace Niculae_Ana_Maria_Proiect3.Models
         public int? ManagerId { get; set; }
 
         // Navigational property pentru Manager
-        public Manager Manager { get; set; }
+        public Manager? Manager { get; set; }
 
         public ICollection<SarcinaMembruEchipa> SarcinaMembriEchipa { get; set; } // Relația many-to-many
 
@@ -29,7 +29,7 @@ namespace Niculae_Ana_Maria_Proiect3.Models
 
     public enum Functie
     {
-        Manager,
+        
         Programator,
         HR,
         Designer,

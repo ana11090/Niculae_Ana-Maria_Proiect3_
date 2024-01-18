@@ -1,0 +1,48 @@
+﻿@model List<Niculae_Ana_Maria_Proiect3.Models.MembruEchipa>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Nume
+            </th>
+            <th>
+                Functie
+            </th>
+            <th>
+                Manager
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var membru in Model)
+        {
+            <tr>
+                <td>
+                    @membru.Nume
+                </td>
+                <td>
+                    @membru.Functie
+                </td>
+                <td>
+                    @membru.Manager?.Nume
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@membru.MembruEchipaId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@membru.MembruEchipaId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@membru.MembruEchipaId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

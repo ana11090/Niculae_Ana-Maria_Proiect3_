@@ -13,17 +13,22 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <label asp-for="NumeSarcina" class="control-label">Titlu sarcina</label>
+                <input asp-for="NumeSarcina" class="form-control" />
+                <span asp-validation-for="NumeSarcina" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Descriere" class="control-label"></label>
                 <input asp-for="Descriere" class="form-control" />
                 <span asp-validation-for="Descriere" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DataIncepere" class="control-label"></label>
+                <label asp-for="DataIncepere" class="control-label">Data incepere</label>
                 <input asp-for="DataIncepere" class="form-control" />
                 <span asp-validation-for="DataIncepere" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DataFinalizare" class="control-label"></label>
+                <label asp-for="DataFinalizare" class="control-label">Data finalizare</label>
                 <input asp-for="DataFinalizare" class="form-control" />
                 <span asp-validation-for="DataFinalizare" class="text-danger"></span>
             </div>
