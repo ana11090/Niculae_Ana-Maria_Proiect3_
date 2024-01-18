@@ -3,6 +3,11 @@
     public class SarcinaViewModel
     {
         public Sarcina Sarcina { get; set; }
-        public List<MembruEchipaCheckboxViewModel> TeamMembers { get; set; }
+        public List<MembruEchipaCheckboxViewModel> MembriiEchipa { get; set; }
+
+        public SarcinaViewModel()
+        {
+            MembriiEchipa = new List<MembruEchipaCheckboxViewModel>();
+        }
     }
 }

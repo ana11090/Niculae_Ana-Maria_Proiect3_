@@ -1,4 +1,4 @@
-﻿@model Niculae_Ana_Maria_Proiect3.Models.Sarcina
+﻿@model Niculae_Ana_Maria_Proiect3.Models.View.SarcinaViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -11,39 +11,44 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="NumeSarcina" class="control-label">Titlu sarcina</label>
-                <input asp-for="NumeSarcina" class="form-control" />
-                <span asp-validation-for="NumeSarcina" class="text-danger"></span>
+                <label asp-for="Sarcina.NumeSarcina" class="control-label">Titlu sarcina</label>
+                <input asp-for="Sarcina.NumeSarcina" class="form-control" />
+                <span asp-validation-for="Sarcina.NumeSarcina" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Descriere" class="control-label">Descriere</label>
-                <input asp-for="Descriere" class="form-control" />
-                <span asp-validation-for="Descriere" class="text-danger"></span>
+                <label asp-for="Sarcina.Descriere" class="control-label">Descriere</label>
+                <input asp-for="Sarcina.Descriere" class="form-control" />
+                <span asp-validation-for="Sarcina.Descriere" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DataIncepere" class="control-label">Data incepere</label>
-                <input asp-for="DataIncepere" type="date" class="form-control" />
-                <span asp-validation-for="DataIncepere" class="text-danger"></span>
+                <label asp-for="Sarcina.DataIncepere" class="control-label">Data incepere</label>
+                <input asp-for="Sarcina.DataIncepere" type="date" class="form-control" />
+                <span asp-validation-for="Sarcina.DataIncepere" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DataFinalizare" class="control-label">Data finalizare</label>
-                <input asp-for="DataFinalizare" type="date" class="form-control" />
-                <span asp-validation-for="DataFinalizare" class="text-danger"></span>
+                <label asp-for="Sarcina.DataFinalizare" class="control-label">Data finalizare</label>
+                <input asp-for="Sarcina.DataFinalizare" type="date" class="form-control" />
+                <span asp-validation-for="Sarcina.DataFinalizare" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Status" class="control-label">Status</label>
-                <select asp-for="Status" class="form-control" asp-items="Html.GetEnumSelectList<Niculae_Ana_Maria_Proiect3.Models.StatusSarcina>()"></select>
-                <span asp-validation-for="Status" class="text-danger"></span>
+                <label asp-for="Sarcina.Status" class="control-label">Status</label>
+                <select asp-for="Sarcina.Status" class="form-control" asp-items="Html.GetEnumSelectList<Niculae_Ana_Maria_Proiect3.Models.StatusSarcina>()"></select>
+                <span asp-validation-for="Sarcina.Status" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ProiectId" class="control-label">Proiect</label>
-                <select asp-for="ProiectId" class="form-control" asp-items="ViewBag.ProiectId"></select>
-                <span asp-validation-for="ProiectId" class="text-danger"></span>
+                <label asp-for="Sarcina.ProiectId" class="control-label">Proiect</label>
+                <select asp-for="Sarcina.ProiectId" class="form-control" asp-items="ViewBag.ProiectId"></select>
+                <span asp-validation-for="Sarcina.ProiectId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="SarcinaMembriEchipa" class="control-label">Membrii Echipei</label>
-                <select asp-for="SarcinaMembriEchipa" asp-items="ViewBag.MembriEchipa" multiple="multiple" class="form-control"></select>
-            </div>
+            @for (int i = 0; i < Model.MembriiEchipa.Count; i++)
+            {
+                <div class="form-group">
+                    <input asp-for="@Model.MembriiEchipa[i].IsSelected" type="checkbox" />
+                    <input asp-for="@Model.MembriiEchipa[i].MembruEchipaId" type="hidden" />
+                    @Model.MembriiEchipa[i].Nume
+                </div>
+            }
+
 
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
