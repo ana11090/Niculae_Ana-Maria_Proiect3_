@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Niculae_Ana_Maria_Proiect3.Data;
 
@@ -11,9 +12,11 @@ using Niculae_Ana_Maria_Proiect3.Data;
 namespace Niculae_Ana_Maria_Proiect3.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    partial class LibraryContextModelSnapshot : ModelSnapshot
+    [Migration("20240118100801_secondMigration")]
+    partial class secondMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -79,17 +82,11 @@ namespace Niculae_Ana_Maria_Proiect3.Migrations
                     b.Property<int>("Functie")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ManagerId")
-                        .IsRequired()
-                        .HasColumnType("int");
-
                     b.Property<string>("Nume")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("MembruEchipaId");
-
-                    b.HasIndex("ManagerId");
 
                     b.ToTable("MembruEchipa", (string)null);
                 });
@@ -185,17 +182,6 @@ namespace Niculae_Ana_Maria_Proiect3.Migrations
                     b.Navigation("Sarcina");
                 });
 
-            modelBuilder.Entity("Niculae_Ana_Maria_Proiect3.Models.MembruEchipa", b =>
-                {
-                    b.HasOne("Niculae_Ana_Maria_Proiect3.Models.Manager", "Manager")
-                        .WithMany("MembriEchipa")
-                        .HasForeignKey("ManagerId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
-
-                    b.Navigation("Manager");
-                });
-
             modelBuilder.Entity("Niculae_Ana_Maria_Proiect3.Models.Proiect", b =>
                 {
                     b.HasOne("Niculae_Ana_Maria_Proiect3.Models.Manager", "ManagerProiect")
@@ -239,8 +225,6 @@ namespace Niculae_Ana_Maria_Proiect3.Migrations
 
             modelBuilder.Entity("Niculae_Ana_Maria_Proiect3.Models.Manager", b =>
                 {
-                    b.Navigation("MembriEchipa");
-
                     b.Navigation("Proiecte");
                 });
 

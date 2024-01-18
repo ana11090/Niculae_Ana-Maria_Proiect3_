@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Niculae_Ana_Maria_Proiect3.Models.Sarcina>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Descriere)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataIncepere)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataFinalizare)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProiectAsociat)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descriere)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataIncepere)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataFinalizare)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProiectAsociat.Nume)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.SarcinaId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.SarcinaId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.SarcinaId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

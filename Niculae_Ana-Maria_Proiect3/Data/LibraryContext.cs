@@ -55,6 +55,12 @@ namespace Niculae_Ana_Maria_Proiect3.Data
                 .WithMany(m => m.SarcinaMembriEchipa)
                 .HasForeignKey(sm => sm.MembruEchipaId);
 
+            modelBuilder.Entity<Manager>()
+                .HasMany(m => m.MembriEchipa)
+                .WithOne(me => me.Manager)
+                .HasForeignKey(me => me.ManagerId)
+                .OnDelete(DeleteBehavior.SetNull);
+
             // Table mappings
             modelBuilder.Entity<Proiect>().ToTable("Proiect");
             modelBuilder.Entity<Sarcina>().ToTable("Sarcina");
