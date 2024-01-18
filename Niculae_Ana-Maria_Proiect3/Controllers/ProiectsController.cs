@@ -50,8 +50,6 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
         }
 
 
-
-
         // GET: Proiects/Details/5
         public async Task<IActionResult> Details(int? id)
         {

@@ -12,9 +12,9 @@ namespace Niculae_Ana_Maria_Proiect3.Models
         public StatusSarcina Status { get; set; }
         public int ProiectId { get; set; } // Cheie străină pentru Proiect
         public Proiect? ProiectAsociat { get; set; } // Proprietatea de navigație
-        public ICollection<Comentariu> Comentarii { get; set; } // Colecția de comentarii asociate sarcinii
+        public ICollection<Comentariu>? Comentarii { get; set; } // Colecția de comentarii asociate sarcinii
 
-        public ICollection<SarcinaMembruEchipa> SarcinaMembriEchipa { get; set; } // Ar fi trebuit sa fie "SarcinaMembriEchipa"
+        public ICollection<SarcinaMembruEchipa>? SarcinaMembriEchipa { get; set; } // Ar fi trebuit sa fie "SarcinaMembriEchipa"
 
         public Sarcina()
         {

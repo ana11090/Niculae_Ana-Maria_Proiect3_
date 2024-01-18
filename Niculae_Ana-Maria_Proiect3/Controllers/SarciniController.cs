@@ -51,29 +51,43 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
             return View(sarcina);
         }
 
-        // GET: Sarcini/Create
         public IActionResult Create()
         {
             ViewData["ProiectId"] = new SelectList(_context.Proiecte, "ProiectId", "Nume");
+            ViewData["MembriEchipa"] = new SelectList(_context.MembriEchipa, "MembruEchipaId", "Nume");
             return View();
         }
 
+
         // POST: Sarcini/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SarcinaId,Titlu,Descriere,DataIncepere,DataFinalizare,Status,ProiectId")] Sarcina sarcina)
+        public async Task<IActionResult> Create([Bind("NumeSarcina,Descriere,DataIncepere,DataFinalizare,Status,ProiectId")] Sarcina sarcina, int[] SelectedMembriEchipaIds)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(sarcina);
+                _context.Sarcini.Add(sarcina);
+
+                if (SelectedMembriEchipaIds != null)
+                {
+                    foreach (var membruId in SelectedMembriEchipaIds)
+                    {
+                        _context.SarcinaMembriEchipa.Add(new SarcinaMembruEchipa { SarcinaId = sarcina.SarcinaId, MembruEchipaId = membruId });
+                    }
+                }
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["ProiectId"] = new SelectList(_context.Proiecte, "ProiectId", "Nume", sarcina.ProiectId);
+            ViewData["MembriEchipa"] = new SelectList(_context.MembriEchipa, "MembruEchipaId", "Nume");
+            ViewData["Status"] = new SelectList(Enum.GetValues(typeof(StatusSarcina)));
             return View(sarcina);
         }
+
+
+
 
         // GET: Sarcini/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -133,6 +147,8 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
                         throw;
                     }
                 }
+
+
                 return RedirectToAction(nameof(Index));
             }
 

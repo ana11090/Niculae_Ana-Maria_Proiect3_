@@ -5,8 +5,6 @@
 }
 
 <h1>Create</h1>
-
-<h4>Sarcina</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -18,29 +16,35 @@
                 <span asp-validation-for="NumeSarcina" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Descriere" class="control-label"></label>
+                <label asp-for="Descriere" class="control-label">Descriere</label>
                 <input asp-for="Descriere" class="form-control" />
                 <span asp-validation-for="Descriere" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DataIncepere" class="control-label">Data incepere</label>
-                <input asp-for="DataIncepere" class="form-control" />
+                <input asp-for="DataIncepere" type="date" class="form-control" />
                 <span asp-validation-for="DataIncepere" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DataFinalizare" class="control-label">Data finalizare</label>
-                <input asp-for="DataFinalizare" class="form-control" />
+                <input asp-for="DataFinalizare" type="date" class="form-control" />
                 <span asp-validation-for="DataFinalizare" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" class="form-control"></select>
+                <label asp-for="Status" class="control-label">Status</label>
+                <select asp-for="Status" class="form-control" asp-items="Html.GetEnumSelectList<Niculae_Ana_Maria_Proiect3.Models.StatusSarcina>()"></select>
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ProiectId" class="control-label"></label>
-                <select asp-for="ProiectId" class ="form-control" asp-items="ViewBag.ProiectId"></select>
+                <label asp-for="ProiectId" class="control-label">Proiect</label>
+                <select asp-for="ProiectId" class="form-control" asp-items="ViewBag.ProiectId"></select>
+                <span asp-validation-for="ProiectId" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="SarcinaMembriEchipa" class="control-label">Membrii Echipei</label>
+                <select asp-for="SarcinaMembriEchipa" asp-items="ViewBag.MembriEchipa" multiple class="form-control"></select>
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -53,5 +57,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

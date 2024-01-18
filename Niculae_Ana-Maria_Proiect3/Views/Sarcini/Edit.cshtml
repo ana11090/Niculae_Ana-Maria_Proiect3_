@@ -1,60 +1,54 @@
 ﻿@model Niculae_Ana_Maria_Proiect3.Models.Sarcina
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Create";
 }
 
-<h1>Edit</h1>
-
-<h4>Sarcina</h4>
+<h1>Create</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="SarcinaId" />
 
-            <!-- Existing form fields -->
             <div class="form-group">
                 <label asp-for="NumeSarcina" class="control-label"></label>
                 <input asp-for="NumeSarcina" class="form-control" />
                 <span asp-validation-for="NumeSarcina" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Descriere" class="control-label"></label>
                 <input asp-for="Descriere" class="form-control" />
                 <span asp-validation-for="Descriere" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="DataIncepere" class="control-label"></label>
-                <input asp-for="DataIncepere" class="form-control" />
+                <input asp-for="DataIncepere" type="date" class="form-control" />
                 <span asp-validation-for="DataIncepere" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="DataFinalizare" class="control-label"></label>
-                <input asp-for="DataFinalizare" class="form-control" />
+                <input asp-for="DataFinalizare" type="date" class="form-control" />
                 <span asp-validation-for="DataFinalizare" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" class="form-control">
-                    <option value="Neinceputa">Neinceputa</option>
-                    <option value="InDesfasurare">In Desfasurare</option>
-                    <option value="Finalizata">Finalizata</option>
-                </select>
+                <select asp-for="Status" asp-items="Html.GetEnumSelectList<Niculae_Ana_Maria_Proiect3.Models.StatusSarcina>()" class="form-control"></select>
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="ProiectId" class="control-label"></label>
-                <select asp-for="ProiectId" class="form-control" asp-items="ViewBag.ProiectId"></select>
+                <select asp-for="ProiectId" asp-items="ViewBag.ProiectId" class="form-control"></select>
                 <span asp-validation-for="ProiectId" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="SarcinaMembriEchipa" class="control-label">Select Team Members:</label>
-                <select asp-for="SarcinaMembriEchipa" asp-items="ViewBag.TeamMembers" multiple class="form-control"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
