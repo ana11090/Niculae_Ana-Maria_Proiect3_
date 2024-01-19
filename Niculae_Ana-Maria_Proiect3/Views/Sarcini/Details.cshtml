@@ -74,7 +74,7 @@
 <div class="container">
     <div class="row">&nbsp;</div>
     <div class="row">
-        <div class="col-2">Comentariu</div>
+        <div class="col-2">Adauga comentariu:</div>
         <div class="col-4"><input type="text" id="messageInput" /></div>
     </div>
     <div class="row">&nbsp;</div>
@@ -88,25 +88,24 @@
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-12">
-        <hr />
-    </div>
-</div>
+
+
+
+<h3>Comentarii</h3>
 <div class="row">
     <div class="col-6">
         <ul id="messagesList"></ul>
     </div>
 </div>
-
-
-<h3>Comentarii</h3>
 @if (ViewBag.Comments != null && ViewBag.Comments.Count > 0)
 {
     <ul id="messagesList">
         @foreach (var comment in ViewBag.Comments)
         {
-            <li>@comment.Text - @comment.DataOra (@comment.Username)</li>
+            <li>
+                @(comment.Username != null ? comment.Username + " says " : "")
+                @comment.Text - @comment.DataOra
+            </li>
         }
     </ul>
 }
@@ -114,5 +113,5 @@
 
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
 <script src="~/js/chat.js"></script>
-}
+
 

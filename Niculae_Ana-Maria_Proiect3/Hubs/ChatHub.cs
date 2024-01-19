@@ -40,7 +40,9 @@ namespace Niculae_Ana_Maria_Proiect3.Hubs
         private async Task BroadcastMessage(string user, string message)
         {
             user = Context.User.Identity.Name;
-            await Clients.All.SendAsync("ReceiveMessage", user, message);
+            var dateTime = DateTime.Now.ToString(); 
+            await Clients.All.SendAsync("ReceiveMessage", user, message, dateTime);
+            //await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
 
 

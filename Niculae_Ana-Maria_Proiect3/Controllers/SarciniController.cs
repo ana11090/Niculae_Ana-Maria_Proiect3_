@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,10 +15,12 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
     public class SarciniController : Controller
     {
         private readonly LibraryContext _context;
-
-        public SarciniController(LibraryContext context)
+        private readonly UserManager<IdentityUser> _userManager;
+        public SarciniController(LibraryContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+
         }
 
         // GET: Sarcini
@@ -52,21 +55,27 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
                 return NotFound();
             }
 
-            // If you're using IdentityDbContext with ApplicationUser
-            var commentsWithUsernames = await _context.Comentarii
-     .Where(c => c.SarcinaId == id)
-     .OrderBy(c => c.DataOra)
-     .Select(c => new
-     {
-         c.Text,
-         c.DataOra,
-         Username = _context.Users.FirstOrDefault(u => u.Id == c.AutorId).UserName
-     })
-     .ToListAsync();
+            var comments = await _context.Comentarii
+                .Where(c => c.SarcinaId == id)
+                .OrderByDescending(c => c.DataOra)
+                .ToListAsync();
 
+            var commentsWithUsernames = new List<object>();
 
-            // Check if the result is not null or empty
-            if (commentsWithUsernames == null || !commentsWithUsernames.Any())
+            foreach (var comment in comments)
+            {
+                var user = await _userManager.FindByIdAsync(comment.AutorId);
+                var username = user?.UserName ?? "Unknown";
+                commentsWithUsernames.Add(new
+                {
+                    comment.Text,
+                    comment.DataOra,
+                    AutorId = comment.AutorId,
+                    Username = username
+                });
+            }
+
+            if (!commentsWithUsernames.Any())
             {
                 Console.WriteLine("No comments found or query failed");
             }
@@ -75,6 +84,8 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
 
             return View(sarcina);
         }
+
+
 
 
 
@@ -254,21 +265,27 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
         // GET: Sarcini/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Sarcini == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var sarcina = await _context.Sarcini
-                .Include(s => s.ProiectAsociat)
-                .FirstOrDefaultAsync(m => m.SarcinaId == id);
+            var sarcina = await _context.Sarcini.FindAsync(id);
             if (sarcina == null)
             {
                 return NotFound();
             }
 
-            return View(sarcina);
+            var comentarii = _context.Comentarii.Where(c => c.SarcinaId == id).ToList();
+
+            _context.Comentarii.RemoveRange(comentarii);
+
+            _context.Sarcini.Remove(sarcina);
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
+
 
         // POST: Sarcini/Delete/5
         [HttpPost, ActionName("Delete")]
