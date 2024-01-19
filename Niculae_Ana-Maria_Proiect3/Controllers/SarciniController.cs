@@ -43,10 +43,8 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
             }
 
             var sarcina = await _context.Sarcini
-                .Include(s => s.SarcinaMembriEchipa)
-                    .ThenInclude(sme => sme.MembruEchipa)
                 .Include(s => s.ProiectAsociat)
-                    .ThenInclude(p => p.ManagerProiect)
+                .Include(s => s.SarcinaMembriEchipa).ThenInclude(sme => sme.MembruEchipa)
                 .FirstOrDefaultAsync(m => m.SarcinaId == id);
 
             if (sarcina == null)
@@ -54,8 +52,18 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
                 return NotFound();
             }
 
+            // Fetch the comments for this Sarcina
+            var comments = await _context.Comentarii
+                .Where(c => c.SarcinaId == id)
+                .OrderBy(c => c.DataOra) // Assuming you want to order by date
+                .ToListAsync();
+
+            // Pass the comments to the view
+            ViewBag.Comments = comments;
+
             return View(sarcina);
         }
+
 
 
         //public IActionResult Create()

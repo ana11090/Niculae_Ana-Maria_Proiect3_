@@ -12,7 +12,11 @@
         public int? SarcinaId { get; set; }
         public Sarcina Sarcina { get; set; }
 
-        // Constructorul implicit
-        
+        public Comentariu()
+        {
+        }
+
+
+
     }
 }

@@ -69,3 +69,50 @@
     <a asp-action="Edit" asp-route-id="@Model?.SarcinaId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+<!-- Comentarii-->
+<div class="container">
+    <div class="row">&nbsp;</div>
+    <div class="row">
+        <div class="col-2">Utilizator</div>
+        <div class="col-4"><input type="text" id="userInput" /></div>
+    </div>
+    <div class="row">
+        <div class="col-2">Comentariu</div>
+        <div class="col-4"><input type="text" id="messageInput" /></div>
+    </div>
+    <div class="row">&nbsp;</div>
+    @* <div id="sarcinaIdElement" data-sarcina-id="@Model.SarcinaId"></div> *@
+    <div class="col-4"><input type="text" id="sarcinaIdElement" /></div>
+
+    <div class="row">
+        <div class="col-6">
+            <input type="button" id="sendButton" value="Send Message" />
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <hr />
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        <ul id="messagesList"></ul>
+    </div>
+</div>
+
+
+<h3>Comentarii</h3>
+<ul id="messagesList">
+    @foreach (var comment in ViewBag.Comments as List<Niculae_Ana_Maria_Proiect3.Models.Comentariu>)
+    {
+        <li>@comment.Text - @comment.DataOra</li>
+    }
+</ul>
+
+
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/chat.js"></script>
+}
+
