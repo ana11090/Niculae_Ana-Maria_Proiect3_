@@ -74,10 +74,6 @@
 <div class="container">
     <div class="row">&nbsp;</div>
     <div class="row">
-        <div class="col-2">Utilizator</div>
-        <div class="col-4"><input type="text" id="userInput" /></div>
-    </div>
-    <div class="row">
         <div class="col-2">Comentariu</div>
         <div class="col-4"><input type="text" id="messageInput" /></div>
     </div>
@@ -105,12 +101,15 @@
 
 
 <h3>Comentarii</h3>
-<ul id="messagesList">
-    @foreach (var comment in ViewBag.Comments as List<Niculae_Ana_Maria_Proiect3.Models.Comentariu>)
-    {
-        <li>@comment.Text - @comment.DataOra</li>
-    }
-</ul>
+@if (ViewBag.Comments != null && ViewBag.Comments.Count > 0)
+{
+    <ul id="messagesList">
+        @foreach (var comment in ViewBag.Comments)
+        {
+            <li>@comment.Text - @comment.DataOra (@comment.Username)</li>
+        }
+    </ul>
+}
 
 
 <script src="~/js/signalr/dist/browser/signalr.js"></script>

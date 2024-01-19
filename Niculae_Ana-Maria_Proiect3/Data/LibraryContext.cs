@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Niculae_Ana_Maria_Proiect3.Models.View;
 using Niculae_Ana_Maria_Proiect3.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Niculae_Ana_Maria_Proiect3.Data
 {
@@ -16,7 +17,7 @@ namespace Niculae_Ana_Maria_Proiect3.Data
         public DbSet<MembruEchipa> MembriEchipa { get; set; }
         public DbSet<Manager> Manageri { get; set; }
         public DbSet<SarcinaMembruEchipa> SarcinaMembriEchipa { get; set; }
-
+        public DbSet<Utilizator> Users { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
           
@@ -68,6 +69,8 @@ namespace Niculae_Ana_Maria_Proiect3.Data
             modelBuilder.Entity<MembruEchipa>().ToTable("MembruEchipa");
             modelBuilder.Entity<Manager>().ToTable("Manager");
             modelBuilder.Entity<SarcinaMembruEchipa>().ToTable("SarcinaMembruEchipa");
+            modelBuilder.Entity<Utilizator>().ToTable("Users");
+
 
         }
 

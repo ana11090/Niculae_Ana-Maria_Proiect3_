@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Niculae_Ana_Maria_Proiect3.Data;
 using Niculae_Ana_Maria_Proiect3.Models;
 
 namespace Niculae_Ana_Maria_Proiect3.Hubs
 {
+    [Authorize]
     public class ChatHub : Hub
     {
         private readonly LibraryContext _context;
@@ -37,8 +39,10 @@ namespace Niculae_Ana_Maria_Proiect3.Hubs
 
         private async Task BroadcastMessage(string user, string message)
         {
+            user = Context.User.Identity.Name;
             await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
+
 
         private async Task SaveComment(string user, string message, string sarcinaId)
         {
@@ -47,7 +51,7 @@ namespace Niculae_Ana_Maria_Proiect3.Hubs
             {
                 Text = message,
                 DataOra = DateTime.Now,
-                AutorId = sarcina, // Utilizează direct variabila int
+                AutorId = Context.UserIdentifier, // Utilizează direct variabila int
                 SarcinaId = sarcina // Utilizează direct variabila int
             };
 

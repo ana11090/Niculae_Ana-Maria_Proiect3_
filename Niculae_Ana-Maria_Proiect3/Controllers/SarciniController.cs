@@ -52,17 +52,30 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
                 return NotFound();
             }
 
-            // Fetch the comments for this Sarcina
-            var comments = await _context.Comentarii
-                .Where(c => c.SarcinaId == id)
-                .OrderBy(c => c.DataOra) // Assuming you want to order by date
-                .ToListAsync();
+            // If you're using IdentityDbContext with ApplicationUser
+            var commentsWithUsernames = await _context.Comentarii
+     .Where(c => c.SarcinaId == id)
+     .OrderBy(c => c.DataOra)
+     .Select(c => new
+     {
+         c.Text,
+         c.DataOra,
+         Username = _context.Users.FirstOrDefault(u => u.Id == c.AutorId).UserName
+     })
+     .ToListAsync();
 
-            // Pass the comments to the view
-            ViewBag.Comments = comments;
+
+            // Check if the result is not null or empty
+            if (commentsWithUsernames == null || !commentsWithUsernames.Any())
+            {
+                Console.WriteLine("No comments found or query failed");
+            }
+
+            ViewBag.Comments = commentsWithUsernames;
 
             return View(sarcina);
         }
+
 
 
 

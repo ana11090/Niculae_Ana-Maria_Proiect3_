@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Niculae_Ana_Maria_Proiect3.Data;
 
@@ -11,9 +12,11 @@ using Niculae_Ana_Maria_Proiect3.Data;
 namespace Niculae_Ana_Maria_Proiect3.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    partial class LibraryContextModelSnapshot : ModelSnapshot
+    [Migration("20240119031548_NumeleMigrarii")]
+    partial class NumeleMigrarii
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -222,7 +225,7 @@ namespace Niculae_Ana_Maria_Proiect3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Utilizator", (string)null);
                 });
 
             modelBuilder.Entity("Niculae_Ana_Maria_Proiect3.Models.View.SarcinaMembruEchipa", b =>
