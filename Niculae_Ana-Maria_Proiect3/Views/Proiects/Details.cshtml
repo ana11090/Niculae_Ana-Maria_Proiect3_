@@ -47,9 +47,38 @@
             @Html.DisplayFor(model => model.ManagerProiect.Nume)
         </dd>
     </dl>
+    <div>
+        <h4>Sarcini</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nume Sarcina</th>
+                    <th>Data Incepere</th>
+                    <th>Data Finalizare</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var sarcina in Model.Sarcini)
+                {
+                    <tr>
+                        <td>@sarcina.NumeSarcina</td>
+                        <td>@sarcina.DataIncepere</td>
+                        <td>@sarcina.DataFinalizare</td>
+                        <td>@sarcina.Status</td>
+                        <td>
+                            <a asp-action="Edit" asp-controller="Sarcini" asp-route-id="@sarcina.SarcinaId">Edit</a>
+                            <a asp-action="Details" asp-controller="Sarcini" asp-route-id="@sarcina.SarcinaId">Details</a>
+                            <a asp-action="Delete" asp-controller="Sarcini" asp-route-id="@sarcina.SarcinaId">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.ProiectId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model?.ProiectId">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>

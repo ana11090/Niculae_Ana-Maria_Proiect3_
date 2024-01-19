@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Niculae_Ana_Maria_Proiect3.Data;
 using Niculae_Ana_Maria_Proiect3.Models;
 
@@ -55,11 +56,23 @@ namespace Niculae_Ana_Maria_Proiect3.Hubs
             {
                 await _context.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch (DbUpdateException ex)
             {
                 // Log the exception
-                Console.WriteLine($"An error occurred while saving the comment: {ex.Message}");
+                Console.WriteLine($"DbUpdateException occurred: {ex.Message}");
+
+                // Examine the inner exception for more details
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner exception: {ex.InnerException.Message}");
+                }
+
                 // Consider how you want to handle the exception. Re-throwing or logging.
+            }
+            catch (Exception ex)
+            {
+                // Handle other exceptions if needed
+                Console.WriteLine($"An error occurred while saving the comment: {ex.Message}");
             }
         }
 

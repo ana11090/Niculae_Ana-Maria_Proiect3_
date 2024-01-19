@@ -23,54 +23,46 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
         // GET: Proiects
         public async Task<IActionResult> Index()
         {
-            var proiecteWithManagerNames = await _context.Proiecte
+            var proiecte = await _context.Proiecte
                 .Include(p => p.ManagerProiect)
+                .Include(p => p.Sarcini) // Eager loading Sarcini
+                .Select(p => new ProiectViewModel
+                {
+                    ProiectId = p.ProiectId,
+                    Nume = p.Nume,
+                    Descriere = p.Descriere,
+                    DataIncepere = p.DataIncepere,
+                    DataFinalizare = p.DataFinalizare,
+                    Status = p.Status,
+                    ManagerId = p.ManagerId,
+                    ManagerNume = p.ManagerProiect.Nume,
+                    NumarSarcini = p.Sarcini.Count // Now this should correctly count the related Sarcini
+                })
                 .ToListAsync();
-
-            // înlocuiți ManagerId cu numele managerului
-            foreach (var proiect in proiecteWithManagerNames)
-            {
-                proiect.ManagerProiect = await _context.Manageri.FindAsync(proiect.ManagerId);
-            }
-
-            var proiecte = proiecteWithManagerNames.Select(p => new ProiectViewModel
-            {
-                ProiectId = p.ProiectId,
-                Nume = p.Nume,
-                Descriere = p.Descriere,
-                DataIncepere = p.DataIncepere,
-                DataFinalizare = p.DataFinalizare,
-                Status = p.Status,
-                ManagerId = p.ManagerId,
-                ManagerNume = p.ManagerProiect.Nume,
-                NumarSarcini = p.Sarcini.Count
-            }).ToList();
 
             return View("Index", proiecte);
         }
 
 
-        // GET: Proiects/Details/5
+
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Proiecte == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var proiect = await _context.Proiecte
                 .Include(p => p.ManagerProiect)
+                .Include(p => p.Sarcini) // Include sarcinile asociate proiectului
                 .FirstOrDefaultAsync(m => m.ProiectId == id);
+
             if (proiect == null)
             {
                 return NotFound();
             }
 
-            // Fetch the manager's name based on the ManagerId
-            var managerName = proiect.ManagerProiect != null ? proiect.ManagerProiect.Nume : "N/A"; // Display "N/A" if no manager is associated
-
-            // Create a view model or use ViewBag to pass the manager's name to the view
-            ViewBag.ManagerName = managerName;
+            // Restul codului pentru a calcula managerul și a afișa detalii
 
             return View(proiect);
         }

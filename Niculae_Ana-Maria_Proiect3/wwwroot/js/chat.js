@@ -18,7 +18,7 @@ connection.start().then(function () {
 document.getElementById("sendButton").addEventListener("click", function (event) {
     var user = document.getElementById("userInput").value;
     var message = document.getElementById("messageInput").value;
-    var sarcinaId = document.getElementById("sarcinaIdElement").value;
+    var sarcinaId = document.getElementById("sarcinaId").value;
 
     connection.invoke("SendMessage", user, message, sarcinaId).catch(function (err) {
         return console.error(err.toString());
