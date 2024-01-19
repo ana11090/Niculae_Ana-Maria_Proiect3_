@@ -73,6 +73,7 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
 
 
         // GET: MembriiEchipa/Edit/5
+        [Authorize(Policy = "HRPolicy")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -91,6 +92,7 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
         }
 
         // POST: MembriiEchipa/Edit/5
+        [Authorize(Policy = "HRPolicy")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("MembruEchipaId,Nume,Functie,ManagerId")] MembruEchipa membruEchipa)
@@ -123,7 +125,7 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
             ViewData["ManagerId"] = new SelectList(_context.Manageri, "ManagerId", "Nume", membruEchipa.ManagerId);
             return View(membruEchipa);
         }
-
+        [Authorize(Policy = "HRPolicy")]
         // GET: MembriiEchipa/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -144,6 +146,7 @@ namespace Niculae_Ana_Maria_Proiect3.Controllers
         }
 
         // POST: MembriiEchipa/Delete/5
+        [Authorize(Policy = "HRPolicy")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
