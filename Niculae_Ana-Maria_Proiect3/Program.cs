@@ -3,6 +3,7 @@ using Niculae_Ana_Maria_Proiect3.Data;
 using Niculae_Ana_Maria_Proiect3.Hubs;
 using Microsoft.AspNetCore.Identity;
 using Niculae_Ana_Maria_Proiect3.Data.Niculae_Ana_Maria_Proiect3.Data;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,15 @@ builder.Services.AddDbContext<IdentityContext>(options =>
 
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddSignalR();
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = false;
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 8;
+    options.Password.RequireNonAlphanumeric = false; 
+});
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
